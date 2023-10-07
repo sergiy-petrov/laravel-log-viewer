@@ -9,20 +9,22 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ["8.0", "8.1", "8.2", "8.3"]
-        laravel: ["^9.0", "^10.0"]
+        php: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3"]
+        laravel: ["^6.0", "^7.0", "^8.0", "^9.0", "^10.0"]
         dependencies:
             - "lowest"
             - "highest"
         exclude:
           - php: "8.0"
             laravel: "^10.0"
-            dependencies: "lowest"
-          - php: "8.0"
+          - php: "7.4"
             laravel: "^10.0"
-            dependencies: "highest"
+          - php: "7.3"
+            laravel: "^10.0"
+          - php: "7.2"
+            laravel: "^10.0"
 
-    name: "PHP${{ matrix.php }} - Laravel${{ matrix.laravel }} ${{ matrix.dependencies == 'highest' && '↑' || '↓' }}"
+    name: "PHP${{ matrix.php }} - Laravel${{ matrix.laravel }}"
 
     runs-on: "ubuntu-latest"
 
@@ -41,12 +43,7 @@ jobs:
       - name: "Check Composer configuration"
         run: "composer validate --strict"
 
-      - name: "Install lowest dependencies from composer.json"
-        if: "matrix.dependencies == 'lowest'"
-        run: "composer update --with='laravel/framework:${{ matrix.laravel }}' --no-interaction --no-progress --prefer-lowest"
-
       - name: "Install highest dependencies from composer.json"
-        if: "matrix.dependencies == 'highest'"
         run: "composer update --with='laravel/framework:${{ matrix.laravel }}' --no-interaction --no-progress"
 
       - name: "Check PSR-4 mapping"
