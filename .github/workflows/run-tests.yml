@@ -66,6 +66,10 @@ jobs:
             laravel: "^6.0"
           - php: "8.5"
             laravel: "^7.0"
+          - php: "8.5"
+            laravel: "^8.0"
+          - php: "8.5"
+            laravel: "^9.0"
     name: "PHP${{ matrix.php }} - Laravel${{ matrix.laravel }}"
 
     runs-on: "ubuntu-latest"
